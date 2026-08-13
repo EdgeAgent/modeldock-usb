@@ -1,7 +1,9 @@
 {
   "port": 4173,
-  "database": {
-    "url": "set via PORTABLE_DATABASE_URL or first-run setup"
+  "persistence": {
+    "default": "local-json",
+    "stateFile": "portable-data/agent-ops-state.json",
+    "mysqlOverride": "set PORTABLE_PERSISTENCE=mysql and provide PORTABLE_DATABASE_URL only when using MySQL/TiDB"
   },
   "model": {
     "provider": "set via PORTABLE_MODEL_PROVIDER",
@@ -9,7 +11,7 @@
     "apiKey": "never store in this example file"
   },
   "integrations": {
-    "mode": "internet-required-unless-local-adapter-is-installed"
+    "mode": "internet-required-unless-local-connectors-are-installed"
   },
   "security": {
     "secretsStorage": "encrypted-portable-data",

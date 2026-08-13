@@ -6,9 +6,22 @@ import { addAuditLog, addExecutionLog, createApproval, createDeliverable, create
 import { publishRealtime } from "./realtime";
 import { z } from "zod";
 import { nanoid } from "nanoid";
+import { getLocalJsonState, getLocalJsonStatePath, updateLocalJsonState } from "./local-json-store";
 
 export const appRouter = router({
   system: systemRouter,
+  settings: router({
+    get: protectedProcedure.query(async () => {
+      const state = await getLocalJsonState();
+      return { executionMode: state.executionMode, updatedAt: state.updatedAt, storagePath: getLocalJsonStatePath() };
+    }),
+    setExecutionMode: protectedProcedure.input(z.object({ executionMode: z.enum(["offline", "cloud"]) })).mutation(async ({ input, ctx }) => {
+      const state = await updateLocalJsonState({ executionMode: input.executionMode });
+      await addAuditLog({ eventType: "Execution mode changed", actorType: "human", actorName: ctx.user.name || ctx.user.email || "Workspace user", details: `Execution mode set to ${input.executionMode}`, referenceKey: "WORKSPACE-MODE" });
+      publishRealtime({ type: "audit.created", referenceKey: "WORKSPACE-MODE", payload: { eventType: "Execution mode changed", details: `Execution mode set to ${state.executionMode}`, actorName: ctx.user.name || ctx.user.email || "Workspace user" } });
+      return { executionMode: state.executionMode, updatedAt: state.updatedAt, storagePath: getLocalJsonStatePath() };
+    }),
+  }),
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => { const cookieOptions = getSessionCookieOptions(ctx.req); ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 }); return { success: true } as const; }),

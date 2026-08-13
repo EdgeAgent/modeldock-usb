@@ -131,3 +131,13 @@
 - [x] Create and use a shared client-side workflow launch guard utility in Home and Command Center.
 
 - [x] Save a fresh checkpoint containing the bundled runtimes, portable database configuration, Offline mode, shared launch guard, tests, and USB archive.
+
+- [x] Add a user settings panel for manually switching between Offline and Cloud modes with clear interaction feedback.
+- [x] Add a persistent visual status indicator showing the active Offline or Cloud execution mode.
+- [x] Implement and test a local JSON-backed persistence adapter for self-contained Offline data storage.
+- [x] Verify the new settings and Offline persistence flows, then save a fresh checkpoint.
+- [x] Wire core application entities through the local JSON adapter when self-contained Offline persistence is active.
+- [x] Update portable documentation and configuration to describe the complete local JSON persistence path.
+- [x] Re-run full validation and save a checkpoint after the core adapter expansion.
+- [x] Align portable database-url and config examples with the default local JSON persistence path and optional MySQL override.
+- [x] Save the final checkpoint after the configuration documentation correction.

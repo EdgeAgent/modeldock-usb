@@ -1,3 +1,6 @@
-# Copy this file to database-url.txt during first-run setup and replace the placeholder.
-# The current server uses MySQL/TiDB; a local database server or bundled adapter is still required.
+# Offline mode does not require this file: the portable runtime persists application data in
+# portable-data/agent-ops-state.json using the local JSON adapter by default.
+#
+# Only copy this file to database-url.txt when intentionally using the optional MySQL/TiDB path,
+# and set PORTABLE_PERSISTENCE=mysql in the host environment before launching.
 mysql://user:password@127.0.0.1:3306/agent_ops_desk

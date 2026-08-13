@@ -19,7 +19,7 @@ if (!existsSync(entry)) {
 
 const child = spawn(runtime.path, [entry], {
   cwd: root,
-  env: { ...process.env, NODE_ENV: "production", PORT: port, PORTABLE_ROOT: root, DATABASE_URL: process.env.DATABASE_URL || process.env.PORTABLE_DATABASE_URL || portableDatabaseUrl || undefined },
+  env: { ...process.env, NODE_ENV: "production", PORT: port, PORTABLE_ROOT: root, PORTABLE_JSON_STORE_PATH: process.env.PORTABLE_JSON_STORE_PATH || resolve(dataRoot, "agent-ops-state.json"), PORTABLE_PERSISTENCE: process.env.PORTABLE_PERSISTENCE || "local-json", DATABASE_URL: process.env.DATABASE_URL || process.env.PORTABLE_DATABASE_URL || portableDatabaseUrl || undefined },
   stdio: "inherit",
 });
 
