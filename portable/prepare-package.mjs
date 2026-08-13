@@ -13,6 +13,8 @@ if (!existsSync(required)) {
 await rm(output, { recursive: true, force: true });
 await mkdir(resolve(output, "portable-data"), { recursive: true });
 await cp(resolve(root, "dist"), resolve(output, "dist"), { recursive: true });
+await cp(resolve(root, "portable-runtime"), resolve(output, "portable-runtime"), { recursive: true });
 await cp(resolve(root, "portable"), resolve(output, "portable"), { recursive: true, filter: (source) => !source.endsWith("prepare-package.mjs") });
 await writeFile(resolve(output, "portable-data", ".gitkeep"), "");
+if (existsSync(resolve(root, "portable-data/database-url.example.txt"))) await cp(resolve(root, "portable-data/database-url.example.txt"), resolve(output, "portable-data/database-url.example.txt"));
 console.log(`USB package assembled at ${output}`);

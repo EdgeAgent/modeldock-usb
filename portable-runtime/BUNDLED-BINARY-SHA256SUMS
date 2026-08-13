@@ -1,0 +1,4 @@
+af8d5d1e234beb26b3095e6bebf80edc781f79c9435553a383037eccec2716f8  portable-runtime/linux-x64/node
+364dbc8442f8d5c04fd4226bcfcf8e60d3268627eb1d7be214a91bb7d74cdbb9  portable-runtime/windows-x64/node.exe
+513c49a165da711255b800a3eaf185ae7e3e159141fa6cceb1f47c8093ccf468  portable-runtime/macos-x64/node
+5c79f8e198fd2456ea6660aaa6be218f9f44747f2306c7d0f5f97b087b2f2dfc  portable-runtime/macos-arm64/node

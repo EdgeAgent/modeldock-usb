@@ -1,0 +1,12 @@
+{
+  "runtime": "node",
+  "version": "22.13.0",
+  "selection": "portable/select-node.mjs",
+  "platforms": {
+    "linux-x64": { "path": "portable-runtime/linux-x64/node", "checksum": "portable-runtime/linux-x64/SHA256SUMS", "status": "bundled-and-checksummed" },
+    "windows-x64": { "path": "portable-runtime/windows-x64/node.exe", "status": "bundled-and-official-checksummed" },
+    "macos-x64": { "path": "portable-runtime/macos-x64/node", "status": "bundled-and-official-checksummed" },
+    "macos-arm64": { "path": "portable-runtime/macos-arm64/node", "status": "bundled-and-official-checksummed" }
+  },
+  "security": "Binaries are extracted from the official Node.js v22.13.0 release archives. The package includes SHASUMS256.txt, SHASUMS256.txt.asc, SHASUMS256.txt.sig, and BUNDLED-BINARY-SHA256SUMS for release verification. A release pipeline should verify the signed checksum before distribution."
+}

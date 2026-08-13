@@ -1,0 +1,3 @@
+# Copy this file to database-url.txt during first-run setup and replace the placeholder.
+# The current server uses MySQL/TiDB; a local database server or bundled adapter is still required.
+mysql://user:password@127.0.0.1:3306/agent_ops_desk

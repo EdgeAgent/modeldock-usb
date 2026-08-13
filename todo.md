@@ -112,3 +112,22 @@
 
 - [x] Re-run portable script syntax checks, application typecheck/tests, and USB package assembly after the final Windows-host-check documentation change.
 - [x] Save a fresh final checkpoint after the post-documentation validation pass.
+
+- [x] Add runtime slots and official checksum/signing metadata for Windows, macOS Intel/Apple Silicon, and Linux; the large verified binary payload is assembled in the separate USB distribution artifact.
+- [x] Update the shared launcher runtime to select a bundled runtime when present and fall back transparently to system Node when absent.
+- [x] Add portable-data database configuration and a first-run local database path for USB-contained agent data; the current MySQL/TiDB adapter still requires a local or reachable database server.
+- [x] Add an Offline mode setting that switches execution policy between local-only and cloud-enabled operation.
+- [x] Surface Offline mode in the dashboard interface with clear status, persistence, and safety messaging.
+- [x] Ensure offline mode blocks workflow starts for non-local model agents and preserves approvals, audit logs, and emergency stops.
+- [x] Add tests, package verification, responsive visual verification, and a fresh checkpoint.
+
+- [x] Add explicit in-dashboard Offline mode messaging describing persistence, blocked cloud actions, and retained approval/audit/emergency-stop controls.
+- [x] Enforce Offline mode across every client workflow-launch path, including Command Center, with a shared guard.
+- [x] Add a server-side execution-mode guard or explicit mutation contract for offline-only workflow launches.
+- [x] Clearly separate USB-local portable configuration/state from the current MySQL/TiDB application database and document that a true local database adapter is still required for fully offline persistence.
+- [x] Run final validation and save a fresh checkpoint after these corrections.
+
+- [x] Add in-dashboard copy explicitly stating that Offline mode persists locally across sessions.
+- [x] Create and use a shared client-side workflow launch guard utility in Home and Command Center.
+
+- [x] Save a fresh checkpoint containing the bundled runtimes, portable database configuration, Offline mode, shared launch guard, tests, and USB archive.
