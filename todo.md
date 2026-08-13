@@ -54,3 +54,15 @@
 - [x] Emit execution-log-specific realtime events whenever execution log rows are created, and subscribe the UI to those events.
 - [x] Write execution-log entries for tool calls, approval approvals/denials/resubmissions, and all run state transitions.
 - [x] Save a fresh checkpoint after the complete execution-log and realtime coverage pass.
+
+- [x] Add quick-action templates in the Command Center for frequently used multi-step workflows.
+- [x] Allow quick-action templates to populate and launch multi-step workflow commands safely.
+- [x] Add workflow controls to retry failed steps.
+- [x] Add workflow controls to pause active agents and active workflow steps.
+- [x] Add step-level timeout configuration and enforcement.
+- [x] Add a live log-tail view for the selected run.
+- [x] Add live log-tail filters by event type, actor, and step.
+- [x] Preserve WebSocket updates, polling fallback, approval gates, audit entries, and emergency-stop enforcement through the new controls.
+- [x] Add tests, responsive visual verification, and a fresh checkpoint for the workflow-control upgrades.
+
+- [x] Add a true agent-level pause action in the live run detail surface that updates agent status and blocks new launches.

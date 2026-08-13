@@ -2,11 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
-const { updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval } = vi.hoisted(() => ({
+const { updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, updateWorkflowStepTimeout, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval } = vi.hoisted(() => ({
   updateAgentConfig: vi.fn(async (id: number, config: Record<string, unknown>) => ({ id, ...config })),
   addAuditLog: vi.fn(async () => undefined),
   addExecutionLog: vi.fn(async (entry: Record<string, unknown>) => ({ id: 51, ...entry })),
   listExecutionLogs: vi.fn(async () => [{ id: 51, runId: 31, eventType: "run.created", actorType: "system", actorName: "Workflow runtime", message: "Run launched", createdAt: new Date() }]),
+  updateWorkflowStepTimeout: vi.fn(async (workflowId: number, stepKey: string, timeoutSeconds: number) => ({ id: 61, workflowId, stepKey, name: "Research", config: { timeoutSeconds } })),
   listAgents: vi.fn(async () => [{ id: 7, name: "Test Agent", enabledSkills: ["Proposal writing"], enabledConnectors: ["gmail"] }]),
   listWorkflows: vi.fn(async () => [{ id: 11, workflowKey: "WF-TEST", name: "Client delivery", status: "draft" }]),
   listDeliverables: vi.fn(async () => [{ deliverable: { id: 21, title: "Client brief", status: "review" }, agent: { name: "Test Agent" } }]),
@@ -24,7 +25,7 @@ const { updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, list
 }));
 vi.mock("./db", async () => {
   const actual = await vi.importActual<typeof import("./db")>("./db");
-  return { ...actual, updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval };
+  return { ...actual, updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, updateWorkflowStepTimeout, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval };
 });
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
@@ -71,6 +72,21 @@ describe("agent operations governance", () => {
     expect(result).toMatchObject({ status: "waiting_approval", currentStep: "workflow:11;approval:approval|Human review" });
     expect(createRun).toHaveBeenCalledWith(expect.objectContaining({ status: "waiting_approval" }));
     expect(createApproval).toHaveBeenCalledWith(expect.objectContaining({ runId: 31, status: "pending", toolName: "workflow-approval" }));
+  });
+
+  it("retries a failed workflow step", async () => {
+    getRunByKey.mockResolvedValueOnce({ id: 31, runKey: "RUN-STEP", agentId: 7, currentStep: "workflow:11;step:research|Research", status: "failed" });
+    const caller = appRouter.createCaller(createContext());
+    const result = await caller.runs.retry({ runKey: "RUN-STEP" });
+    expect(updateRunStatus).toHaveBeenCalledWith("RUN-STEP", "running", "Retrying · workflow:11;step:research|Research");
+    expect(result).toMatchObject({ status: "running" });
+  });
+
+  it("saves a step timeout for the active workflow step", async () => {
+    const caller = appRouter.createCaller(createContext());
+    const result = await caller.runs.setStepTimeout({ runKey: "RUN-STEP", timeoutSeconds: 600 });
+    expect(updateWorkflowStepTimeout).toHaveBeenCalledWith(11, "research", 600);
+    expect(result).toMatchObject({ config: { timeoutSeconds: 600 } });
   });
 
   it("returns persisted execution logs for a run detail view", async () => {
