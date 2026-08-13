@@ -2,12 +2,14 @@ import { describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
-const { updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, updateWorkflowStepTimeout, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval } = vi.hoisted(() => ({
+const { updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, updateWorkflowStepTimeout, resumeAgent, updateWorkflow, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval } = vi.hoisted(() => ({
   updateAgentConfig: vi.fn(async (id: number, config: Record<string, unknown>) => ({ id, ...config })),
   addAuditLog: vi.fn(async () => undefined),
   addExecutionLog: vi.fn(async (entry: Record<string, unknown>) => ({ id: 51, ...entry })),
   listExecutionLogs: vi.fn(async () => [{ id: 51, runId: 31, eventType: "run.created", actorType: "system", actorName: "Workflow runtime", message: "Run launched", createdAt: new Date() }]),
   updateWorkflowStepTimeout: vi.fn(async (workflowId: number, stepKey: string, timeoutSeconds: number) => ({ id: 61, workflowId, stepKey, name: "Research", config: { timeoutSeconds } })),
+  resumeAgent: vi.fn(async (id: number) => ({ id, status: "active" })),
+  updateWorkflow: vi.fn(async (id: number, values: Record<string, unknown>) => ({ id, ...values })),
   listAgents: vi.fn(async () => [{ id: 7, name: "Test Agent", enabledSkills: ["Proposal writing"], enabledConnectors: ["gmail"] }]),
   listWorkflows: vi.fn(async () => [{ id: 11, workflowKey: "WF-TEST", name: "Client delivery", status: "draft" }]),
   listDeliverables: vi.fn(async () => [{ deliverable: { id: 21, title: "Client brief", status: "review" }, agent: { name: "Test Agent" } }]),
@@ -25,7 +27,7 @@ const { updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, upda
 }));
 vi.mock("./db", async () => {
   const actual = await vi.importActual<typeof import("./db")>("./db");
-  return { ...actual, updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, updateWorkflowStepTimeout, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval };
+  return { ...actual, updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, updateWorkflowStepTimeout, resumeAgent, updateWorkflow, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval };
 });
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
@@ -59,6 +61,13 @@ describe("agent operations governance", () => {
     expect(deliverables[0]?.deliverable).toMatchObject({ title: "Client brief", status: "review" });
   });
 
+  it("resumes an agent only through the admin procedure", async () => {
+    const caller = appRouter.createCaller(createContext());
+    const result = await caller.agents.resume({ id: 7 });
+    expect(resumeAgent).toHaveBeenCalledWith(7);
+    expect(result).toMatchObject({ id: 7, status: "active" });
+  });
+
   it("saves a workflow with an explicit approval gate", async () => {
     const caller = appRouter.createCaller(createContext());
     const result = await caller.workflows.create({ name: "Review path", description: "A guarded path", steps: [{ stepKey: "approval", position: 0, name: "Human review", stepType: "approval", requiresApproval: 1 }] });
@@ -89,10 +98,17 @@ describe("agent operations governance", () => {
     expect(result).toMatchObject({ config: { timeoutSeconds: 600 } });
   });
 
+  it("updates a saved workflow template", async () => {
+    const caller = appRouter.createCaller(createContext());
+    const result = await caller.workflows.update({ id: 11, name: "Weekly ops", description: "Run the weekly operations template" });
+    expect(updateWorkflow).toHaveBeenCalledWith(11, expect.objectContaining({ name: "Weekly ops" }), undefined);
+    expect(result).toMatchObject({ id: 11, name: "Weekly ops" });
+  });
+
   it("returns persisted execution logs for a run detail view", async () => {
     const caller = appRouter.createCaller(createContext());
     const result = await caller.runs.logs({ runKey: "RUN-STEP" });
-    expect(listExecutionLogs).toHaveBeenCalledWith(31);
+    expect(listExecutionLogs).toHaveBeenCalledWith(31, { from: undefined, to: undefined });
     expect(result[0]).toMatchObject({ eventType: "run.created", message: "Run launched" });
   });
 

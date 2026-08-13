@@ -66,3 +66,22 @@
 - [x] Add tests, responsive visual verification, and a fresh checkpoint for the workflow-control upgrades.
 
 - [x] Add a true agent-level pause action in the live run detail surface that updates agent status and blocks new launches.
+
+- [x] Add persistent custom workflow templates with name, description, ordered steps, priority, tier, and approval-gate settings.
+- [x] Add create, edit, save, delete, and chat-insert actions for custom workflow templates.
+- [x] Add date-range filtering to the execution-log tail.
+- [x] Add execution-log export with the active filters applied.
+- [x] Add role-based permissions for resuming paused agents and workflows.
+- [x] Add resume-agent controls that securely reactivate paused agents and resume eligible workflow runs.
+- [x] Audit resume decisions and export actions with actor attribution.
+- [x] Add tests, responsive visual verification, and a fresh checkpoint for the personalized controls.
+
+- [x] Implement true custom template deletion or clearly expose the archive behavior under matching labels.
+- [x] Persist full custom template edits, including ordered steps and each step's priority, tier, and approval-gate settings.
+- [x] Save a fresh checkpoint after the personalized-control corrections.
+
+- [x] Add direct step-level template editing so users can load, review, reorder, and modify each saved step's agent, task, priority, tier, and approval-gate setting before saving.
+- [x] Save a fresh checkpoint after the direct template-step editor is verified.
+
+- [x] Add move up and move down controls for custom template steps and persist updated positions on save.
+- [x] Save a fresh checkpoint after verifying template-step reordering.
