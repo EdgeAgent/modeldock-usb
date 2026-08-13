@@ -90,6 +90,18 @@ export const workspaceState = mysqlTable("workspaceState", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
+export const executionLogs = mysqlTable("executionLogs", {
+  id: int("id").autoincrement().primaryKey(),
+  runId: int("runId").notNull(),
+  eventType: varchar("eventType", { length: 80 }).notNull(),
+  actorType: mysqlEnum("actorType", ["human", "agent", "system"]).notNull(),
+  actorName: varchar("actorName", { length: 160 }).notNull(),
+  step: varchar("step", { length: 180 }),
+  message: text("message").notNull(),
+  metadata: json("metadata"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 export const workflows = mysqlTable("workflows", {
   id: int("id").autoincrement().primaryKey(),
   workflowKey: varchar("workflowKey", { length: 40 }).notNull().unique(),
@@ -140,3 +152,4 @@ export type Policy = typeof policies.$inferSelect;
 export type Workflow = typeof workflows.$inferSelect;
 export type WorkflowStep = typeof workflowSteps.$inferSelect;
 export type Deliverable = typeof deliverables.$inferSelect;
+export type ExecutionLog = typeof executionLogs.$inferSelect;

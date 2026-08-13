@@ -42,3 +42,15 @@
 - [x] Audit every supported chat command and blocked or approval-gated command attempt, not only successful launches.
 - [x] Add explicit command-chat keyboard, screen-reader, loading, error, and empty-state coverage.
 - [x] Save a new project checkpoint after the completed chat hardening pass.
+
+- [x] Upgrade natural-language processing to parse complex multi-step workflow commands into ordered steps with per-step agent, task, priority, tier, and approval requirements.
+- [x] Add multi-step workflow preview, launch, progress, pause, and failure handling in the Command Center.
+- [x] Add clickable live agent status cards with a detailed execution-log drawer or panel.
+- [x] Persist and display detailed execution log entries with timestamps, actors, steps, tool calls, approvals, and state transitions.
+- [x] Add a WebSocket server channel for low-latency agent status and execution-log updates.
+- [x] Subscribe the dashboard and Command Center to WebSocket updates with reconnect and polling fallback behavior.
+- [x] Add tests, responsive visual verification, and a fresh checkpoint for the upgrades.
+
+- [x] Emit execution-log-specific realtime events whenever execution log rows are created, and subscribe the UI to those events.
+- [x] Write execution-log entries for tool calls, approval approvals/denials/resubmissions, and all run state transitions.
+- [x] Save a fresh checkpoint after the complete execution-log and realtime coverage pass.

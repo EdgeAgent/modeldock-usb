@@ -2,9 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
-const { updateAgentConfig, addAuditLog, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval } = vi.hoisted(() => ({
+const { updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval } = vi.hoisted(() => ({
   updateAgentConfig: vi.fn(async (id: number, config: Record<string, unknown>) => ({ id, ...config })),
   addAuditLog: vi.fn(async () => undefined),
+  addExecutionLog: vi.fn(async (entry: Record<string, unknown>) => ({ id: 51, ...entry })),
+  listExecutionLogs: vi.fn(async () => [{ id: 51, runId: 31, eventType: "run.created", actorType: "system", actorName: "Workflow runtime", message: "Run launched", createdAt: new Date() }]),
   listAgents: vi.fn(async () => [{ id: 7, name: "Test Agent", enabledSkills: ["Proposal writing"], enabledConnectors: ["gmail"] }]),
   listWorkflows: vi.fn(async () => [{ id: 11, workflowKey: "WF-TEST", name: "Client delivery", status: "draft" }]),
   listDeliverables: vi.fn(async () => [{ deliverable: { id: 21, title: "Client brief", status: "review" }, agent: { name: "Test Agent" } }]),
@@ -22,7 +24,7 @@ const { updateAgentConfig, addAuditLog, listAgents, listWorkflows, listDeliverab
 }));
 vi.mock("./db", async () => {
   const actual = await vi.importActual<typeof import("./db")>("./db");
-  return { ...actual, updateAgentConfig, addAuditLog, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval };
+  return { ...actual, updateAgentConfig, addAuditLog, addExecutionLog, listExecutionLogs, listAgents, listWorkflows, listDeliverables, createWorkflow, createDeliverable, listWorkflowSteps, getWorkspaceState, getAgentById, getRunByKey, getRunById, updateRunStatus, createRun, createApproval, resolveApproval };
 });
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
@@ -69,6 +71,13 @@ describe("agent operations governance", () => {
     expect(result).toMatchObject({ status: "waiting_approval", currentStep: "workflow:11;approval:approval|Human review" });
     expect(createRun).toHaveBeenCalledWith(expect.objectContaining({ status: "waiting_approval" }));
     expect(createApproval).toHaveBeenCalledWith(expect.objectContaining({ runId: 31, status: "pending", toolName: "workflow-approval" }));
+  });
+
+  it("returns persisted execution logs for a run detail view", async () => {
+    const caller = appRouter.createCaller(createContext());
+    const result = await caller.runs.logs({ runKey: "RUN-STEP" });
+    expect(listExecutionLogs).toHaveBeenCalledWith(31);
+    expect(result[0]).toMatchObject({ eventType: "run.created", message: "Run launched" });
   });
 
   it("creates an approval when advancement reaches a later gated step", async () => {
