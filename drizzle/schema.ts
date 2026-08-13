@@ -90,6 +90,46 @@ export const workspaceState = mysqlTable("workspaceState", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
+export const workflows = mysqlTable("workflows", {
+  id: int("id").autoincrement().primaryKey(),
+  workflowKey: varchar("workflowKey", { length: 40 }).notNull().unique(),
+  name: varchar("name", { length: 160 }).notNull(),
+  description: text("description").notNull(),
+  status: mysqlEnum("status", ["draft", "published", "paused"]).default("draft").notNull(),
+  triggerType: varchar("triggerType", { length: 40 }).default("manual").notNull(),
+  createdBy: varchar("createdBy", { length: 160 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export const workflowSteps = mysqlTable("workflowSteps", {
+  id: int("id").autoincrement().primaryKey(),
+  workflowId: int("workflowId").notNull(),
+  stepKey: varchar("stepKey", { length: 40 }).notNull(),
+  position: int("position").notNull(),
+  name: varchar("name", { length: 140 }).notNull(),
+  stepType: mysqlEnum("stepType", ["intake", "agent", "tool", "approval", "deliverable"]).notNull(),
+  agentId: int("agentId"),
+  config: json("config"),
+  requiresApproval: int("requiresApproval").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export const deliverables = mysqlTable("deliverables", {
+  id: int("id").autoincrement().primaryKey(),
+  deliverableKey: varchar("deliverableKey", { length: 40 }).notNull().unique(),
+  runId: int("runId"),
+  workflowId: int("workflowId"),
+  agentId: int("agentId"),
+  title: varchar("title", { length: 200 }).notNull(),
+  kind: varchar("kind", { length: 60 }).notNull(),
+  status: mysqlEnum("status", ["draft", "review", "approved", "delivered", "archived"]).default("draft").notNull(),
+  summary: text("summary").notNull(),
+  outputUrl: text("outputUrl"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type Agent = typeof agents.$inferSelect;
@@ -97,3 +137,6 @@ export type AgentRun = typeof agentRuns.$inferSelect;
 export type Approval = typeof approvals.$inferSelect;
 export type AuditLog = typeof auditLogs.$inferSelect;
 export type Policy = typeof policies.$inferSelect;
+export type Workflow = typeof workflows.$inferSelect;
+export type WorkflowStep = typeof workflowSteps.$inferSelect;
+export type Deliverable = typeof deliverables.$inferSelect;

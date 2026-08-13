@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, Si
 import { startLogin } from "@/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useIsMobile } from "@/hooks/useMobile";
-import { Activity, Bot, ClipboardCheck, Command, FileClock, LayoutDashboard, LogOut, PanelLeft, ShieldCheck, SlidersHorizontal, UsersRound, Workflow } from "lucide-react";
+import { Activity, Bot, ClipboardCheck, Command, FileClock, FileOutput, GitBranch, LayoutDashboard, LogOut, PanelLeft, ShieldCheck, SlidersHorizontal, UsersRound, Workflow } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from "./DashboardLayoutSkeleton";
@@ -14,6 +14,8 @@ const menuItems = [
   { icon: LayoutDashboard, label: "Today", path: "/" },
   { icon: Command, label: "Ask the desk", path: "/chat" },
   { icon: Workflow, label: "Work board", path: "/runs" },
+  { icon: GitBranch, label: "Workflow builder", path: "/workflows" },
+  { icon: FileOutput, label: "Deliverables", path: "/deliverables" },
   { icon: ClipboardCheck, label: "Needs my review", path: "/approvals", count: 26 },
   { icon: UsersRound, label: "Specialists", path: "/agents" },
   { icon: FileClock, label: "Activity history", path: "/audit" },

@@ -28,13 +28,13 @@ This session was opened from the attached shared project. No specific edit reque
 - [x] Persist target dates for new workflows and display them on the work board and command center.
 - [x] Re-run final validation after due-date persistence is added.
 - [x] Save the final redesign checkpoint.
-- [ ] Add a Deliverables tab for agent-created outputs with status, owner, workflow, and access to the output.
-- [ ] Add a workflow builder for composing reusable agent workflows from steps and transitions.
-- [ ] Use Dify and LangChain concepts as reference points without copying their code or branding.
-- [ ] Persist workflows, workflow steps, and deliverable metadata with appropriate audit records.
-- [ ] Preserve approval gates for sensitive or external actions in built workflows.
-- [ ] Add or update Vitest coverage for workflow creation and deliverable behavior.
-- [ ] Verify Deliverables and Workflow Builder across responsive layouts and save a checkpoint.
+- [x] Add a Deliverables tab for agent-created outputs with status, owner, workflow, and access to the output.
+- [x] Add a workflow builder for composing reusable agent workflows from steps and transitions.
+- [x] Use Dify and LangChain concepts as reference points without copying their code or branding.
+- [x] Persist workflows, workflow steps, and deliverable metadata with appropriate audit records.
+- [x] Preserve approval gates for sensitive or external actions in built workflows.
+- [x] Add or update Vitest coverage for workflow creation and deliverable behavior.
+- [x] Verify Deliverables and Workflow Builder across responsive layouts and save a checkpoint.
 - [x] Add a visible Skills tab for per-agent skills and instructions.
 - [x] Add a Memory tab for durable agent context, preferences, and scoped notes.
 - [x] Add Apps and MCPs tabs for per-agent connector access and tool permissions.
@@ -46,3 +46,15 @@ This session was opened from the attached shared project. No specific edit reque
 - [x] Add read-path test coverage for agent configuration.
 - [x] Validate the Specialists configuration workspace on mobile.
 - [x] Save a new checkpoint after the configuration changes.
+- [x] Show the linked workflow on each deliverable card.
+- [x] Enforce approval requirements when launching a workflow with sensitive or tool steps.
+- [x] Add deliverable creation mutation and audit coverage.
+- [x] Validate Deliverables and Workflow Builder on mobile and save the final checkpoint.
+- [x] Create real approval records when a workflow run reaches a required approval or sensitive tool step.
+- [x] Let the builder mark agent and tool steps as approval-gated.
+- [x] Save a final checkpoint after the approval enforcement changes.
+- [x] Carry workflow IDs through launch and advance calls and advance runs through ordered workflow steps.
+- [x] Create approvals only when execution reaches the gated step, including a non-gated step before it.
+- [x] Add test coverage for step progression into a later approval gate.
+- [x] Save a final checkpoint after step-by-step execution validation.
+- [ ] Save a new project checkpoint after the final step-by-step workflow execution changes are validated.
