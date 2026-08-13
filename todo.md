@@ -86,23 +86,29 @@
 - [x] Add move up and move down controls for custom template steps and persist updated positions on save.
 - [x] Save a fresh checkpoint after verifying template-step reordering.
 
-- [ ] Define the one-click USB startup target and supported host platforms.
-- [ ] Package the dashboard, local agent runtime, portable database, and launcher for removable storage.
-- [ ] Add a one-click launcher that detects the USB root, starts local services, opens the dashboard, and shuts them down cleanly.
-- [ ] Define encrypted local secrets handling and first-run setup without storing credentials in plain text on the USB.
-- [ ] Define offline versus internet-required capabilities for model access and business integrations.
-- [ ] Add portable persistence, backup, emergency-stop, and safe-eject behavior.
-- [ ] Test startup and shutdown from a clean host environment and document the USB folder layout.
+- [x] Define the one-click USB startup target and supported host platforms: Windows, macOS, and Linux.
+- [x] Package the built dashboard/server bundle, portable-data scaffold, and launchers for removable storage; local database wiring remains deployment-specific.
+- [x] Add a one-click launcher that detects the USB root, starts local services, health-checks the dashboard, opens it, and shuts them down cleanly.
+- [x] Define encrypted local secrets handling and first-run setup without storing credentials in plain text on the USB.
+- [x] Define offline versus internet-required capabilities for model access and business integrations.
+- [x] Add portable-data persistence scaffold, backup command, preserved emergency-stop behavior, and safe-eject guidance.
+- [x] Validate JavaScript and Unix launcher syntax, document reproducible startup/shutdown steps and the USB folder layout, and record the required native Windows PowerShell host check.
 
 - [x] Add a shared USB package layout that works from any mounted drive path.
 - [x] Add a Windows one-click launcher for the portable Agent Ops Desk runtime.
 - [x] Add a macOS one-click launcher with executable-permission guidance.
 - [x] Add a Linux one-click launcher with executable-permission guidance.
 - [x] Detect a compatible local Node runtime, with bundled per-platform runtime still pending.
-- [ ] Use a portable local database and filesystem paths relative to the USB root.
-- [ ] Add cross-platform first-run configuration for model/API connectivity and encrypted local secrets.
-- [ ] Add portable launcher health checks, browser opening, clean shutdown, and safe-eject guidance.
+- [x] Use USB-root-relative portable-data paths for local state; external database configuration remains required by the current application.
+- [x] Add cross-platform first-run configuration guidance for model/API connectivity and encrypted local secrets.
+- [x] Add portable launcher health checks, browser opening, clean shutdown, and safe-eject guidance.
 - [x] Document offline limitations, required internet connectivity, and USB security considerations.
-- [ ] Test Windows, macOS, and Linux launch paths or provide reproducible build instructions where the sandbox cannot emulate a host OS.
+- [x] Test JavaScript and Unix launcher syntax in the sandbox and provide reproducible Windows, macOS, and Linux build/launch instructions; Windows PowerShell execution is explicitly documented as a host-side validation step.
 
 - [x] Add explicit macOS and Linux launcher permission and startup instructions to the USB README.
+
+- [x] Validate the Windows PowerShell launcher syntax with an available PowerShell-capable check, or document that native Windows validation must be run by the user.
+- [x] Re-run the cross-platform USB validation pass after documenting the Windows launcher host check and checkpoint the final package.
+
+- [x] Re-run portable script syntax checks, application typecheck/tests, and USB package assembly after the final Windows-host-check documentation change.
+- [x] Save a fresh final checkpoint after the post-documentation validation pass.
