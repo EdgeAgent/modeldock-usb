@@ -161,12 +161,20 @@
 - [x] Write a professional GitHub README front page with positioning, quick start, architecture, security, and roadmap.
 - [x] Verify repository hygiene, typecheck, tests, launcher behavior, and visual UI before GitHub export; native Windows execution remains an explicitly documented host-side release gate.
 - [x] Save a GitHub-ready checkpoint and prepare the project for repository export.
-- [ ] Re-authenticate the GitHub connector and export the checkpointed project to the user’s repository.
-- [ ] Create the private GitHub repository `modeldock-usb` and upload the checkpointed ModelDock project.
-- [ ] Verify the remote README and repository contents, then provide the repository URL.
+- [x] Export the checkpointed project to the user’s GitHub repository using authenticated GitHub CLI; the separate connector re-authentication path was not required.
+- [x] Create the private GitHub repository `modeldock-usb` and upload the checkpointed ModelDock project.
+- [x] Verify the remote README and repository contents, then provide the repository URL.
+- [x] Upgrade `EdgeAgent/modeldock-usb` README into a polished developer landing page with a strong hero, proof points, quick start, architecture, security, and roadmap.
+- [x] Create or update the `EdgeAgent` profile README to feature ModelDock USB prominently with a direct project link.
+- [x] Verify both GitHub READMEs and provide the updated project/profile links.
+- [x] Create a branded ModelDock architecture and human-oversight visual for GitHub.
+- [x] Publish the visual asset and embed it in the ModelDock and EdgeAgent profile READMEs.
+- [x] Verify the rendered GitHub image links and provide the updated URLs.
+- [ ] Upload the latest local ModelDock source, README, docs, and supporting files to `EdgeAgent/modeldock-usb`.
+- [ ] Verify the remote commit, source tree, README, and architecture asset after upload.
 - [x] Remove visible Manus branding from product-facing UI, metadata, and local USB copy; infrastructure-only names and auth comments remain non-user-facing.
 - [x] Rebrand the product as a clear local-model LLM USB platform across the dashboard and README as ModelDock USB.
 - [x] Optimize the README hero section for GitHub profile visibility, fast scanning, and shareable positioning.
 - [x] Verify the rebrand, run tests, capture visuals, and save a fresh checkpoint.
-- [ ] Save a new checkpoint containing the ModelDock rebrand and README hero updates.
-- [ ] Run a final quick grep after checkpointing to confirm no remaining user-facing old brand strings.
+- [x] Save a new checkpoint containing the ModelDock rebrand and README hero updates.
+- [x] Run a final quick grep after checkpointing to confirm no remaining user-facing old brand strings; remaining matches are internal helper names or infrastructure-only comments.
