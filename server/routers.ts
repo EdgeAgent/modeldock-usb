@@ -2,7 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { addAuditLog, createRun, getAgentById, getOverview, getWorkspaceState, listAgents, listApprovals, listAuditLogs, listPolicies, listRuns, resolveApproval, setGlobalKillSwitch, updateAgentStatus, updateRunStatus } from "./db";
+import { addAuditLog, createRun, getAgentById, getOverview, getWorkspaceState, listAgents, listApprovals, listAuditLogs, listPolicies, listRuns, resolveApproval, setGlobalKillSwitch, updateAgentConfig, updateAgentStatus, updateRunStatus } from "./db";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 
@@ -15,6 +15,7 @@ export const appRouter = router({
   agents: router({
     list: protectedProcedure.query(() => listAgents()),
     setStatus: protectedProcedure.input(z.object({ id: z.number(), status: z.enum(["active", "paused"]) })).mutation(async ({ input, ctx }) => { const updated = await updateAgentStatus(input.id, input.status); await addAuditLog({ eventType: input.status === "paused" ? "Agent paused" : "Agent activated", actorType: "human", actorName: ctx.user.name || ctx.user.email || "Workspace user", details: `Agent ${input.id} status changed to ${input.status}`, referenceKey: `AGENT-${input.id}` }); return updated; }),
+    updateConfig: protectedProcedure.input(z.object({ id: z.number(), systemInstructions: z.string().optional(), memory: z.string().optional(), enabledSkills: z.array(z.string()), enabledConnectors: z.array(z.string()) })).mutation(async ({ input, ctx }) => { const updated = await updateAgentConfig(input.id, { systemInstructions: input.systemInstructions, memory: input.memory, enabledSkills: input.enabledSkills, enabledConnectors: input.enabledConnectors }); await addAuditLog({ eventType: "Agent configuration updated", actorType: "human", actorName: ctx.user.name || ctx.user.email || "Workspace user", details: `Skills: ${input.enabledSkills.join(", ") || "none"} · Connectors: ${input.enabledConnectors.join(", ") || "none"}`, referenceKey: `AGENT-${input.id}` }); return updated; }),
   }),
   runs: router({
     list: protectedProcedure.query(() => listRuns()),

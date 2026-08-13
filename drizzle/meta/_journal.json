@@ -22,6 +22,13 @@
       "when": 1786581463188,
       "tag": "0002_glossy_karma",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1786582344635,
+      "tag": "0003_worried_ken_ellis",
+      "breakpoints": true
     }
   ]
 }

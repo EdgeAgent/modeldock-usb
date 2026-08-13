@@ -28,3 +28,21 @@ This session was opened from the attached shared project. No specific edit reque
 - [x] Persist target dates for new workflows and display them on the work board and command center.
 - [x] Re-run final validation after due-date persistence is added.
 - [x] Save the final redesign checkpoint.
+- [ ] Add a Deliverables tab for agent-created outputs with status, owner, workflow, and access to the output.
+- [ ] Add a workflow builder for composing reusable agent workflows from steps and transitions.
+- [ ] Use Dify and LangChain concepts as reference points without copying their code or branding.
+- [ ] Persist workflows, workflow steps, and deliverable metadata with appropriate audit records.
+- [ ] Preserve approval gates for sensitive or external actions in built workflows.
+- [ ] Add or update Vitest coverage for workflow creation and deliverable behavior.
+- [ ] Verify Deliverables and Workflow Builder across responsive layouts and save a checkpoint.
+- [x] Add a visible Skills tab for per-agent skills and instructions.
+- [x] Add a Memory tab for durable agent context, preferences, and scoped notes.
+- [x] Add Apps and MCPs tabs for per-agent connector access and tool permissions.
+- [x] Add agent-level configuration persistence and audit visibility.
+- [x] Add tests for saving and reading agent configuration.
+- [x] Validate the new configuration workspace responsively and save a checkpoint.
+- [x] Split Apps and MCPs into separate configuration tabs.
+- [x] Clearly label the connector catalog and explain how workspace connections become available.
+- [x] Add read-path test coverage for agent configuration.
+- [x] Validate the Specialists configuration workspace on mobile.
+- [x] Save a new checkpoint after the configuration changes.
