@@ -1,160 +1,198 @@
+<div align="center">
+
 # ModelDock USB
 
-> **Your local LLM command center — autonomous business workflows, human oversight, and portable USB-first execution.**
+### Local LLM operations for autonomous business workflows—with humans in control.
 
-**ModelDock USB** turns a plain-language business ask into a trackable workflow that can be planned, launched, paused, approved, audited, retried, or stopped. It brings local-model operations out of the demo and into a control desk designed for real operators.
+Run a portable agent command center from a USB drive. Turn plain-language requests into inspectable workflows, use local models, review sensitive actions, follow execution live, and preserve the evidence needed to understand every decision.
 
-**Why people should care:** run a serious agent workspace from a removable drive, keep operational state local by default, connect a loopback model when you want fully disconnected execution, and retain a human approval desk for the moments that matter.
+[![Open repository](https://img.shields.io/badge/GitHub-ModelDock%20USB-111827?logo=github)](https://github.com/EdgeAgent/modeldock-usb)
+[![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-06b6d4)](portable/README.md)
+[![Execution](https://img.shields.io/badge/execution-Offline%20%7C%20Cloud-8b5cf6)](portable/README.md)
+[![License](https://img.shields.io/badge/license-MIT-22c55e)](package.json)
 
-| Local-first promise | What ModelDock delivers |
+[Quick start](#quick-start) · [Why ModelDock](#why-modeldock) · [USB workflow](#one-click-usb-workflow) · [Security](#security-and-privacy) · [Roadmap](#roadmap)
+
+</div>
+
+---
+
+## The product in one sentence
+
+**ModelDock USB is a human-oversight operating system for local LLM agents:** portable enough to carry, structured enough to operate, and conservative enough to stop before sensitive actions happen.
+
+> Autonomous systems should be easy to start, easy to inspect, and easy for a human to stop.
+
+## Why ModelDock
+
+Most agent demos show a model completing a task. ModelDock focuses on the harder operational question: **how do you run autonomous work responsibly when the work matters?**
+
+| Real operator problem | ModelDock response |
 |---|---|
-| **Portable** | Windows, macOS, and Linux USB launchers with bundled-runtime slots |
-| **Private by default** | Atomic local JSON persistence, encrypted secret helper, loopback binding |
-| **Operator-controlled** | Approval gates, audit history, pause/resume, retries, timeouts, and emergency stop |
-| **Model-flexible** | Local model setup, endpoint health checks, USB path discovery, and read-only model scanning |
+| Business requests arrive vague and unstructured | Natural-language command center turns asks into ordered workflow steps |
+| Agents can move faster than review processes | Human approval queue with approve, deny, edit, resubmit, and audit attribution |
+| Failures are difficult to reconstruct | Live run monitor, execution-log tail, filters, retries, pauses, and timeouts |
+| Local model setup is fragmented | USB path discovery, read-only model scanning, readiness validation, and endpoint health checks |
+| Portable data is easy to overwrite | Atomic local JSON persistence, versioned backups, and automatic pre-restore snapshots |
+| A USB app can accidentally expose a service | Loopback-first binding and explicit Offline/Cloud boundaries |
 
-> **Start here:** run `pnpm install && pnpm test`, then open the dashboard with `pnpm dev`. To use it as a USB product, build with `pnpm portable:package` and follow [`portable/README.md`](portable/README.md).
+## What it does
 
-The platform runs as a web dashboard and can be assembled into a cross-platform USB package for **Windows, macOS, and Linux**. Its portable runtime defaults to an atomic local JSON store, supports local-model setup and health checks, and keeps cloud connectivity optional rather than mandatory.
+- **Command Center:** describe a business objective in plain language and preview the multi-step plan before launch.
+- **Agent Registry:** track roles, models, statuses, allowed tools, and operating context.
+- **Live Run Monitor:** follow current step, status, elapsed time, cost estimate, approvals, and detailed events.
+- **Human Approval Desk:** review sensitive actions with evidence, risk tiers, edit/resubmit controls, and actor attribution.
+- **Workflow Builder:** save reusable templates with ordered steps, specialist handoffs, timeouts, and approval gates.
+- **Governance controls:** preserve audit history, policy rules, state transitions, tool calls, and emergency-stop decisions.
+- **Recovery controls:** pause agents, pause runs, retry failed steps, resume eligible work, or trigger the global kill switch.
+- **Portable model operations:** discover platform-specific USB locations, scan supported model files read-only, and select a detected model safely.
 
-## Why this project is different
+## Quick start
 
-Most agent demos show a model completing a task. ModelDock is designed around the harder question: **how do you operate a fleet of agents responsibly when the work matters?**
-
-| Operating problem | ModelDock response |
-|---|---|
-| Business asks arrive vague and unstructured | Natural-language command center converts asks into ordered workflow steps |
-| Agents can act faster than people can review | Human approval queue with edit, deny, resubmit, and audit attribution |
-| Failures are difficult to understand | Live run monitor, execution-log tail, filters, retries, pause/resume, and timeouts |
-| Automation can become unsafe | Per-agent pause, global emergency stop, policy controls, and server-side guards |
-| Sensitive data should not require a cloud dependency | Offline mode, local JSON persistence, encrypted local secrets, and local-model readiness checks |
-| A workspace should travel with its operator | USB-relative paths, bundled-runtime slots, cross-platform launchers, backup/restore, and safe-eject guidance |
-
-## Core capabilities
-
-- **Command Center:** Describe a business objective in plain language and preview the resulting multi-step plan before launch.
-- **Agent Registry:** Track departments, roles, models, allowed tools, status, and configuration.
-- **Live Run Monitor:** Follow current step, status, elapsed time, cost estimate, approvals, and execution events.
-- **Human Approval Desk:** Approve, deny, edit, and resubmit sensitive actions with evidence and risk tiers.
-- **Workflow Builder:** Save reusable templates with ordered steps, agent assignment, priority, timeouts, and approval gates.
-- **Audit and governance:** Preserve chronological activity, actors, state transitions, tool calls, and control decisions.
-- **Emergency controls:** Pause agents, pause runs, retry failed steps, resume eligible work, or trigger the global kill switch.
-- **Offline-first operation:** Select Offline or Cloud mode, persist operational state locally, configure a local model, probe loopback endpoints, and block cloud-only launches.
-- **Portable model operations:** Discover platform-specific USB model locations, scan supported model files read-only, select a detected file, and inspect file size and format.
-- **Versioned backups:** Export v1 JSON backups and create automatic pre-restore snapshots before importing state.
-
-## Quick start for development
-
-### Requirements
-
-- Node.js 22.x or a compatible current Node release
-- pnpm 10.x
-- A MySQL/TiDB connection only when intentionally using the cloud database path; local JSON is the default for the portable runtime
+### Development mode
 
 ```bash
-git clone <your-repository-url>
-cd agent-ops-desk
+git clone https://github.com/EdgeAgent/modeldock-usb.git
+cd modeldock-usb
 pnpm install
 pnpm check
 pnpm test
 pnpm dev
 ```
 
-Open the local dashboard shown by the development server. For a production build:
+Open the dashboard at the address printed by the development server.
 
-```bash
-pnpm build
-pnpm start
-```
+### One-click USB mode
 
-## One-click USB workflow
-
-The USB package is assembled from the production build and portable runtime sources. The launcher selects a bundled runtime when the matching slot exists and falls back to host Node only when necessary.
-
-```text
-Agent-Ops-Desk/
-├── dist/                         # Production dashboard/server bundle
-├── portable/
-│   ├── launch-windows.ps1       # Windows launcher
-│   ├── launch-unix.sh            # macOS/Linux launcher
-│   ├── start-runtime.mjs         # Shared startup, health check, and shutdown
-│   ├── select-node.mjs           # Bundled-runtime selection
-│   ├── package-manifest.json     # Distribution contract
-│   ├── backup.mjs                # Portable data backup helper
-│   ├── secrets.mjs               # Encrypted local secret helper
-│   └── README.md                 # Detailed USB instructions
-├── portable-data/                # Local JSON state and encrypted local data
-└── portable-runtime/             # Bundled Node runtime slots and verification files
-```
-
-Build the application and assemble a package with:
+Build the portable package with:
 
 ```bash
 pnpm portable:package
 ```
 
-On macOS or Linux, run `chmod +x portable/launch-unix.sh` once, then start `./portable/launch-unix.sh`. On Windows, run PowerShell with `powershell -ExecutionPolicy Bypass -File .\\portable\\launch-windows.ps1`. The launcher waits for the local server health check before opening the dashboard and forwards shutdown signals when it exits.
+On macOS or Linux:
 
-Large signed runtime payloads are distributed separately from this source repository when required. The repository retains runtime slots, manifests, checksums, and launcher logic so the source remains reviewable and GitHub-friendly.
+```bash
+chmod +x portable/launch-unix.sh
+./portable/launch-unix.sh
+```
 
-## Local-first data and model safety
+On Windows PowerShell:
 
-Offline mode is not a visual toggle. It is enforced by shared client guards and server-side launch checks. The portable runtime writes application records to `portable-data/agent-ops-state.json` using atomic replacement and restrictive permissions. Cloud persistence remains available as an explicit override with `PORTABLE_PERSISTENCE=mysql` and a configured database URL.
+```powershell
+powershell -ExecutionPolicy Bypass -File .\portable\launch-windows.ps1
+```
 
-The local-model setup flow validates portable paths and loopback endpoints. A manual health check can probe a local endpoint before launch, and Offline workflow starts reject missing or unreachable local-model configuration. Model-file discovery is bounded and read-only: it follows no symlinks, executes no files, and only reports supported extensions such as `.gguf`, `.safetensors`, `.onnx`, `.bin`, `.pt`, and `.pth`.
+The launcher resolves the USB root, selects a compatible bundled runtime when present, initializes portable data, starts the local service, waits for a health check, opens the dashboard, and shuts down cleanly.
 
-> **Important:** This project is an operational platform and a serious starting point, not a certification that every model, connector, or host environment is safe. Test on disposable data, review policies, validate native launchers on each target OS, and keep encrypted backups.
+> Large signed runtime payloads may be distributed separately from this source repository. The repository keeps launcher logic, runtime slots, manifests, checksums, and reproducible packaging steps reviewable.
 
-## Security model
+## Offline and Cloud modes
 
-The default posture is designed around least surprise:
+ModelDock makes the execution boundary visible. **Offline mode** restricts work to local-model execution and stores operational records in the USB-local JSON state file. **Cloud mode** is an explicit opt-in for deployments that provide the required remote services.
 
-1. The portable server binds to loopback when `PORTABLE_ROOT` is set, reducing accidental LAN exposure.
-2. Credentials are not placed in launcher scripts or committed to the repository.
-3. Local secrets use an encrypted AES-GCM helper driven by a host-provided passphrase.
-4. Sensitive workflow actions remain approval-gated and auditable.
-5. Emergency-stop state is preserved across local persistence operations.
-6. Portable backups create a pre-restore snapshot before replacing active state.
-7. Repository rules exclude state files, encrypted secrets, logs, generated USB assemblies, and archives.
+Offline mode is enforced in the launch path, not merely represented by a badge. Missing, invalid, or unreachable local-model configuration blocks the launch and explains what needs to be fixed.
 
-## Architecture at a glance
+### First-run local model setup
+
+Open **User settings → Set up disconnected execution** and configure a provider, model name, and either a USB-relative model path or a loopback endpoint such as `http://127.0.0.1:11434`.
+
+Discovery provides platform-aware USB candidates for Windows, macOS, and Linux. The scanner is bounded and read-only: it does not execute files, follow symlinks, or modify discovered content. Supported formats include `.gguf`, `.safetensors`, `.onnx`, `.bin`, `.pt`, and `.pth`.
+
+## One-click USB workflow
+
+```text
+USB drive
+  ├── portable/launch-windows.ps1   Windows launcher
+  ├── portable/launch-unix.sh       macOS/Linux launcher
+  ├── portable/start-runtime.mjs     startup, health check, shutdown
+  ├── portable/select-node.mjs       bundled-runtime selection
+  ├── portable/backup.mjs            export and restore helper
+  ├── portable/secrets.mjs           encrypted local secret helper
+  ├── portable-data/                 local JSON state and configuration
+  └── portable-runtime/              runtime slots and verification metadata
+```
+
+The runtime defaults to the atomic local JSON store. A MySQL/TiDB path remains available as an explicit deployment override when a remote database is intentionally configured.
+
+## Architecture
 
 ```text
 Natural-language request
-        │
-        ▼
-Command Center → workflow planner → approval gates → agent run
-        │                                  │
-        ├──────── live WebSocket/polling ───┤
-        ▼                                  ▼
-Run monitor + execution logs       Human approval desk
-        │                                  │
-        └──────── local JSON / MySQL ──────┘
-                         │
-                  USB portable runtime
+          │
+          ▼
+ Command Center ──► Workflow planner ──► Approval gates ──► Agent run
+          │                                  │                  │
+          │                                  ├── Human review   │
+          │                                  └── Audit trail    │
+          │                                                     │
+          ├──────── WebSocket + polling updates ────────────────┤
+          ▼                                                     ▼
+ Live run monitor + log tail                         Deliverables + recovery
+          │
+          └──────── Local JSON adapter or MySQL/TiDB override
+                                │
+                         USB portable runtime
 ```
 
-The application uses React 19, Tailwind CSS, Express, tRPC, Drizzle ORM, WebSockets, and Vitest. The local JSON adapter mirrors the application’s operational vocabulary so agents, runs, approvals, logs, policies, workflows, deliverables, and workspace controls can remain available without MySQL.
+The stack uses React, Tailwind CSS, Express, tRPC, Drizzle ORM, WebSockets, and Vitest. The local JSON adapter mirrors the application’s operational entities so agents, runs, approvals, logs, policies, workflows, deliverables, and workspace controls can persist without MySQL.
+
+## Security and privacy
+
+ModelDock is built around conservative defaults:
+
+1. Portable instances bind to loopback by default to reduce accidental LAN exposure.
+2. Secrets are not embedded in launchers or committed to the repository.
+3. The portable secrets helper uses encrypted storage driven by a host-provided passphrase.
+4. Sensitive workflow actions remain approval-gated and auditable.
+5. Emergency-stop state is retained through local persistence and backup operations.
+6. Imports create an automatic pre-restore snapshot before replacing active state.
+7. Repository rules exclude portable state, backups, logs, generated USB assemblies, and local secrets.
+
+> ModelDock is an operational platform, not a certification that every model, connector, workflow, or host environment is safe. Test with disposable data, review policies, verify native launchers on each target operating system, and keep encrypted backups.
+
+## Project layout
+
+```text
+client/          React dashboard and settings experience
+server/          tRPC procedures, persistence, runtime services, and tests
+drizzle/         MySQL/TiDB schema and migrations
+portable/        Windows/macOS/Linux launchers and package tooling
+portable-data/   USB-local configuration and runtime state
+```
 
 ## Validation
-
-The repository currently validates with:
 
 ```bash
 pnpm check
 pnpm test
 ```
 
-The portable test surface also covers launcher/runtime selection, local JSON persistence, backup validation, local-model readiness, platform-specific path discovery, and read-only model-file scanning. Native PowerShell execution and physical USB behavior must still be verified on real Windows, macOS, and Linux hosts before a public release.
+The tests cover workflow parsing, protected operations, local JSON persistence, backup validation, model readiness, health outcomes, platform-specific discovery, and read-only model-file scanning. Native PowerShell behavior and physical USB operation must still be verified on real Windows, macOS, and Linux hosts before a public release.
 
-## Roadmap toward a breakout release
+## Roadmap
 
-The next high-leverage improvements are connector sandboxing, signed release automation, endpoint-specific health probes for common local runtimes, model checksum verification, backup history with retention policies, richer model metadata extraction, and a polished first-run onboarding flow. Community feedback should focus on repeatable business workflows, measurable operator time saved, and safe failure recovery rather than novelty demos.
+The next high-leverage improvements are connector sandboxing, signed release automation, endpoint-specific probes for common local runtimes, model checksum verification, backup history with retention controls, richer model metadata extraction, and guided first-run onboarding.
+
+The goal is not to make an impressive demo. The goal is to make autonomous work **repeatable, inspectable, portable, and recoverable**.
 
 ## Contributing
 
-Contributions are welcome when they improve operator control, reproducibility, security, accessibility, or cross-platform reliability. Please include tests for behavior changes, avoid committing real credentials or state files, and document any host-specific assumptions. For large changes, open an issue describing the workflow, safety boundary, and validation plan before submitting a pull request.
+Contributions are welcome when they improve operator control, reproducibility, security, accessibility, or cross-platform reliability. Include tests for behavior changes, never commit real credentials or state files, and document host-specific assumptions. For larger changes, describe the workflow, safety boundary, and validation plan in an issue or pull request.
 
 ## License
 
 ModelDock is released under the MIT License. See `package.json` for the repository license declaration.
+
+---
+
+<div align="center">
+
+**ModelDock USB · Local models. Human oversight. Portable operations.**
+
+</div>
+
+## References
+
+[1]: https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-github-profile/about-your-profile-readme "GitHub profile README documentation"
+[2]: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes "GitHub README documentation"
