@@ -29,3 +29,16 @@
 
 - [x] Implement an idempotent seed routine for demo agents, runs, approvals, policies, and workspace state.
 - [x] Verify the demo seed routine can run repeatedly without duplicate records or unique-key failures.
+
+- [x] Add a natural-language command chat interface inside Agent Ops Desk.
+- [x] Route chat commands to launch an agent workflow with task, priority level, and tier level.
+- [x] Support chat commands to pause runs, inspect status, and open the Human Approval Queue.
+- [x] Display live run progress in chat with status, current step, elapsed time, cost estimate, and approval state.
+- [x] Add a chat command audit trail and clear safety messaging for blocked or approval-gated actions.
+- [x] Add loading, error, empty, and accessibility states for the command chat.
+- [x] Test, visually verify, and checkpoint the chat experience.
+
+- [x] Render explicit live run updates inside the chat stream with status, current step, elapsed time, cost estimate, and approval state.
+- [x] Audit every supported chat command and blocked or approval-gated command attempt, not only successful launches.
+- [x] Add explicit command-chat keyboard, screen-reader, loading, error, and empty-state coverage.
+- [x] Save a new project checkpoint after the completed chat hardening pass.

@@ -5,12 +5,13 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, Si
 import { startLogin } from "@/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useIsMobile } from "@/hooks/useMobile";
-import { Activity, Bot, ClipboardCheck, FileClock, LayoutDashboard, LogOut, PanelLeft, ShieldCheck, SlidersHorizontal, UsersRound } from "lucide-react";
+import { Activity, Bot, ClipboardCheck, Command, FileClock, LayoutDashboard, LogOut, PanelLeft, ShieldCheck, SlidersHorizontal, UsersRound } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from "./DashboardLayoutSkeleton";
 
 const menuItems = [
+  { icon: Command, label: "Command Center", path: "/chat" },
   { icon: LayoutDashboard, label: "Department Overview", path: "/" },
   { icon: Bot, label: "Agent Registry", path: "/agents" },
   { icon: Activity, label: "Live Run Monitor", path: "/runs" },
