@@ -1,4 +1,4 @@
-import { mkdir, readFile, rename, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rename, stat, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 
 export type LocalJsonState = {
@@ -111,6 +111,46 @@ export function discoverLocalModelPaths(platform: NodeJS.Platform = process.plat
       ? [join(root, "models", "macos"), join(root, "models", "macos-arm64"), join(root, "portable-data", "models", "macos"), join(root, "models", "macos", "model.gguf")]
       : [join(root, "models", "linux"), join(root, "portable-data", "models", "linux"), join(root, "models", "linux", "model.gguf"), join(root, "models", "model.gguf")];
   return { platform, root, candidates };
+}
+
+const MODEL_EXTENSIONS = new Set([".gguf", ".bin", ".safetensors", ".onnx", ".mlmodel", ".pth", ".pt"]);
+
+type ScannedModelFile = { path: string; relativePath: string; format: string; sizeBytes: number; modifiedAt: string };
+
+export async function scanLocalModelFiles() {
+  const discovery = discoverLocalModelPaths();
+  const root = discovery.root;
+  const files: ScannedModelFile[] = [];
+  const visited = new Set<string>();
+  const walk = async (directory: string, depth: number): Promise<void> => {
+    if (depth > 2 || files.length >= 40 || visited.has(directory)) return;
+    visited.add(directory);
+    let entries;
+    try { entries = await readdir(directory, { withFileTypes: true }); } catch { return; }
+    for (const entry of entries) {
+      if (files.length >= 40) break;
+      const absolute = join(directory, entry.name);
+      if (entry.isDirectory() && !entry.isSymbolicLink()) { await walk(absolute, depth + 1); continue; }
+      if (!entry.isFile() || entry.isSymbolicLink()) continue;
+      const extension = entry.name.slice(entry.name.lastIndexOf(".")).toLowerCase();
+      if (!MODEL_EXTENSIONS.has(extension)) continue;
+      try {
+        const metadata = await stat(absolute);
+        files.push({ path: absolute, relativePath: absolute.startsWith(root) ? absolute.slice(root.length + 1) : absolute, format: extension.slice(1), sizeBytes: metadata.size, modifiedAt: metadata.mtime.toISOString() });
+      } catch { /* Ignore files that disappear during a read-only scan. */ }
+    }
+  };
+  for (const candidate of discovery.candidates) {
+    if (files.length >= 40) break;
+    try {
+      const metadata = await stat(candidate);
+      if (metadata.isFile()) {
+        const extension = candidate.slice(candidate.lastIndexOf(".")).toLowerCase();
+        if (MODEL_EXTENSIONS.has(extension)) files.push({ path: candidate, relativePath: candidate.startsWith(root) ? candidate.slice(root.length + 1) : candidate, format: extension.slice(1), sizeBytes: metadata.size, modifiedAt: metadata.mtime.toISOString() });
+      } else if (metadata.isDirectory()) await walk(candidate, 0);
+    } catch { /* Missing USB directories are expected. */ }
+  }
+  return { ...discovery, scannedAt: new Date().toISOString(), files };
 }
 
 export async function exportLocalJsonState() {

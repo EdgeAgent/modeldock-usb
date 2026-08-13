@@ -6,7 +6,7 @@ import { addAuditLog, addExecutionLog, createApproval, createDeliverable, create
 import { publishRealtime } from "./realtime";
 import { z } from "zod";
 import { nanoid } from "nanoid";
-import { discoverLocalModelPaths, exportLocalJsonState, getLocalJsonState, getLocalJsonStatePath, getLocalJsonStateStats, getLocalModelReadiness, importLocalJsonState, probeLocalModel, updateLocalJsonState, validateLocalModelSetup } from "./local-json-store";
+import { discoverLocalModelPaths, exportLocalJsonState, getLocalJsonState, getLocalJsonStatePath, getLocalJsonStateStats, getLocalModelReadiness, importLocalJsonState, probeLocalModel, scanLocalModelFiles, updateLocalJsonState, validateLocalModelSetup } from "./local-json-store";
 
 export const appRouter = router({
   system: systemRouter,
@@ -32,6 +32,7 @@ export const appRouter = router({
     }),
     healthCheckLocalModel: protectedProcedure.mutation(async () => getLocalModelReadiness()),
     discoverModelPaths: protectedProcedure.query(() => discoverLocalModelPaths()),
+    scanModelFiles: protectedProcedure.mutation(() => scanLocalModelFiles()),
     exportBackup: protectedProcedure.mutation(async () => ({ filename: `agent-ops-backup-v1-${new Date().toISOString().replace(/[:.]/g, "-")}.json`, serialized: await exportLocalJsonState() })),
     importBackup: protectedProcedure.input(z.object({ serialized: z.string().min(2).max(20_000_000) })).mutation(async ({ input, ctx }) => {
       const state = await importLocalJsonState(input.serialized);

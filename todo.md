@@ -154,3 +154,6 @@
 - [x] Validate the new health-check, backup, and discovery flows and save a fresh checkpoint.
 - [x] Implement distinct Windows, macOS, and Linux USB model path discovery conventions.
 - [x] Add tests for platform-specific discovery outputs and re-run the final validation/checkpoint pass.
+- [x] Add bounded, read-only filesystem scanning for supported model files inside discovered USB directories.
+- [x] Surface scanned model files in User Settings with safe path selection.
+- [x] Validate filesystem scanning and save a fresh checkpoint.

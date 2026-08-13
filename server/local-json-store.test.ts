@@ -1,8 +1,8 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { discoverLocalModelPaths, exportLocalJsonState, getLocalJsonState, getLocalJsonStateStats, importLocalJsonState, probeLocalModel, updateLocalJsonState, validateLocalModelSetup } from "./local-json-store";
+import { discoverLocalModelPaths, exportLocalJsonState, getLocalJsonState, getLocalJsonStateStats, importLocalJsonState, probeLocalModel, scanLocalModelFiles, updateLocalJsonState, validateLocalModelSetup } from "./local-json-store";
 
 const originalPath = process.env.PORTABLE_JSON_STORE_PATH;
 const tempDirectories: string[] = [];
@@ -67,6 +67,21 @@ describe("local JSON state store", () => {
     expect(windows.candidates.some((candidate) => candidate.includes("windows"))).toBe(true);
     expect(mac.candidates.some((candidate) => candidate.includes("macos"))).toBe(true);
     expect(linux.candidates.some((candidate) => candidate.includes("linux"))).toBe(true);
+  });
+
+  it("scans supported model files without following symlinks or executing files", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "agent-ops-model-scan-"));
+    tempDirectories.push(directory);
+    process.env.PORTABLE_ROOT = directory;
+    const modelDirectory = join(directory, "models", "linux");
+    await mkdir(modelDirectory, { recursive: true });
+    await writeFile(join(modelDirectory, "local.gguf"), "model-bytes");
+    await writeFile(join(modelDirectory, "notes.txt"), "ignore");
+    const result = await scanLocalModelFiles();
+    expect(result.files).toHaveLength(1);
+    expect(result.files[0].format).toBe("gguf");
+    expect(result.files[0].relativePath).toContain("local.gguf");
+    delete process.env.PORTABLE_ROOT;
   });
 
   it("recovers with safe defaults when the state file does not exist", async () => {
