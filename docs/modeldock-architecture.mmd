@@ -1,0 +1,30 @@
+%%{init: {"theme":"base", "themeVariables": {"background":"#071018", "primaryColor":"#0f2530", "primaryTextColor":"#e6f7fb", "primaryBorderColor":"#67e8f9", "lineColor":"#64748b", "secondaryColor":"#182235", "tertiaryColor":"#101a2a", "fontFamily":"Inter, ui-sans-serif, system-ui"}}}%%
+flowchart LR
+    USB["ModelDock USB\nPortable runtime"] --> MODE{"Offline / Cloud\nexecution policy"}
+    MODE --> LOCAL["Local JSON store\nAtomic state + backups"]
+    MODE --> CLOUD["Optional remote services\nExplicit override"]
+
+    ASK["Natural-language\nbusiness ask"] --> CMD["Command Center\nWorkflow planner"]
+    CMD --> PLAN["Inspectable workflow\nSteps + timeouts"]
+    PLAN --> GATE{"Human approval\nrequired?"}
+    GATE -->|Yes| DESK["Human Oversight Desk\nApprove · Deny · Edit · Resubmit"]
+    GATE -->|No| RUN["Local LLM agent run"]
+    DESK --> RUN
+
+    RUN --> LIVE["Live run monitor\nWebSocket + polling"]
+    RUN --> LOG["Audit trail +\nexecution log"]
+    RUN --> OUT["Deliverables\nRecovery controls"]
+
+    STOP[["Emergency stop\nFreeze execution"]] -.-> RUN
+    STOP -.-> CMD
+
+    classDef cyan fill:#0f2530,stroke:#67e8f9,color:#e6f7fb,stroke-width:2px;
+    classDef violet fill:#182235,stroke:#a78bfa,color:#f3e8ff,stroke-width:2px;
+    classDef amber fill:#2b2413,stroke:#fbbf24,color:#fef3c7,stroke-width:2px;
+    classDef green fill:#102a24,stroke:#34d399,color:#d1fae5,stroke-width:2px;
+    classDef red fill:#321b22,stroke:#fb7185,color:#ffe4e6,stroke-width:2px;
+    class USB,MODE,LOCAL,CLOUD cyan;
+    class ASK,CMD,PLAN,RUN violet;
+    class GATE,DESK amber;
+    class LIVE,LOG,OUT green;
+    class STOP red;
