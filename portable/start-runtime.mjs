@@ -1,9 +1,10 @@
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 import { selectNode } from "./select-node.mjs";
 
-const root = process.env.PORTABLE_ROOT ? resolve(process.env.PORTABLE_ROOT) : resolve(new URL("..", import.meta.url).pathname);
+const root = process.env.PORTABLE_ROOT ? resolve(process.env.PORTABLE_ROOT) : resolve(fileURLToPath(new URL("..", import.meta.url)));
 const port = process.env.PORT || "4173";
 const entry = resolve(root, "dist/index.js");
 const dataRoot = resolve(root, "portable-data");

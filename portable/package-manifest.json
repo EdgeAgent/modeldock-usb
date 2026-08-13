@@ -1,6 +1,6 @@
 {
   "name": "agent-ops-desk-usb",
-  "version": "0.1.0-portable-scaffold",
+  "version": "1.0.0-portable",
   "platforms": ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"],
   "launchers": {
     "windows": "portable/launch-windows.ps1",
@@ -10,22 +10,27 @@
   "runtime": {
     "entry": "dist/index.js",
     "port": 4173,
-    "systemNodeRequired": true,
-    "bundledRuntimePending": true
+    "bundledRuntimeSlots": ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"],
+    "systemNodeFallback": true,
+    "recommendedNode": "22.x"
   },
   "storage": {
     "dataRoot": "portable-data",
-    "databaseMode": "portable-configured",
-    "secretsMode": "encrypted-first-run-required"
+    "databaseMode": "local-json-by-default",
+    "mysqlOverride": "PORTABLE_PERSISTENCE=mysql",
+    "secretsMode": "encrypted-first-run-required",
+    "stateFile": "portable-data/agent-ops-state.json"
   },
   "connectivity": {
-    "dashboard": "local",
-    "modelApis": "internet-or-local-model-required",
-    "businessIntegrations": "internet-required-unless-local-adapter-bundled"
+    "dashboard": "local-loopback-only",
+    "modelApis": "local-model-or-network-optional",
+    "businessIntegrations": "network-required-unless-local-adapter-bundled"
   },
   "safety": {
     "safeEjectRequired": true,
     "credentialsInLauncher": false,
-    "emergencyStopPreserved": true
+    "emergencyStopPreserved": true,
+    "modelScanReadOnly": true,
+    "offlineLaunchHealthCheck": true
   }
 }

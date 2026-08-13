@@ -157,3 +157,8 @@
 - [x] Add bounded, read-only filesystem scanning for supported model files inside discovered USB directories.
 - [x] Surface scanned model files in User Settings with safe path selection.
 - [x] Validate filesystem scanning and save a fresh checkpoint.
+- [x] Harden USB runtime startup, local-model execution safeguards, and backup/restore boundaries for real-world use.
+- [x] Write a professional GitHub README front page with positioning, quick start, architecture, security, and roadmap.
+- [x] Verify repository hygiene, typecheck, tests, launcher behavior, and visual UI before GitHub export; native Windows execution remains an explicitly documented host-side release gate.
+- [x] Save a GitHub-ready checkpoint and prepare the project for repository export.
+- [ ] Re-authenticate the GitHub connector and export the checkpointed project to the user’s repository.

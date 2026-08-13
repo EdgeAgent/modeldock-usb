@@ -109,6 +109,15 @@ temp/
 # Webdev artifacts (checkpoint zips, migrations, etc.)
 .webdev/
 
+# Portable runtime data and generated distribution artifacts
+.manus-logs/
+portable-data/agent-ops-state.json
+portable-data/secrets.enc
+portable-data/*.tmp
+portable-backups/
+usb-package/
+*.zip
+
 # Manus version file (auto-generated, not part of source)
 client/public/__manus__/version.json
 .project-config.json
