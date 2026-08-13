@@ -170,8 +170,10 @@
 - [x] Create a branded ModelDock architecture and human-oversight visual for GitHub.
 - [x] Publish the visual asset and embed it in the ModelDock and EdgeAgent profile READMEs.
 - [x] Verify the rendered GitHub image links and provide the updated URLs.
-- [ ] Upload the latest local ModelDock source, README, docs, and supporting files to `EdgeAgent/modeldock-usb`.
-- [ ] Verify the remote commit, source tree, README, and architecture asset after upload.
+- [x] Upload the latest local ModelDock source, README, docs, and supporting files to `EdgeAgent/modeldock-usb`.
+- [ ] Synchronize the complete latest tracked source tree to `EdgeAgent/modeldock-usb`, excluding generated, secret, and oversized artifacts.
+- [ ] Compare remote key files and commit history against the local source after the full-tree sync.
+- [x] Verify the remote commit, source tree, README, and architecture asset after upload.
 - [x] Remove visible Manus branding from product-facing UI, metadata, and local USB copy; infrastructure-only names and auth comments remain non-user-facing.
 - [x] Rebrand the product as a clear local-model LLM USB platform across the dashboard and README as ModelDock USB.
 - [x] Optimize the README hero section for GitHub profile visibility, fast scanning, and shareable positioning.
