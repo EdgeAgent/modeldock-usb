@@ -85,3 +85,24 @@
 
 - [x] Add move up and move down controls for custom template steps and persist updated positions on save.
 - [x] Save a fresh checkpoint after verifying template-step reordering.
+
+- [ ] Define the one-click USB startup target and supported host platforms.
+- [ ] Package the dashboard, local agent runtime, portable database, and launcher for removable storage.
+- [ ] Add a one-click launcher that detects the USB root, starts local services, opens the dashboard, and shuts them down cleanly.
+- [ ] Define encrypted local secrets handling and first-run setup without storing credentials in plain text on the USB.
+- [ ] Define offline versus internet-required capabilities for model access and business integrations.
+- [ ] Add portable persistence, backup, emergency-stop, and safe-eject behavior.
+- [ ] Test startup and shutdown from a clean host environment and document the USB folder layout.
+
+- [x] Add a shared USB package layout that works from any mounted drive path.
+- [x] Add a Windows one-click launcher for the portable Agent Ops Desk runtime.
+- [x] Add a macOS one-click launcher with executable-permission guidance.
+- [x] Add a Linux one-click launcher with executable-permission guidance.
+- [x] Detect a compatible local Node runtime, with bundled per-platform runtime still pending.
+- [ ] Use a portable local database and filesystem paths relative to the USB root.
+- [ ] Add cross-platform first-run configuration for model/API connectivity and encrypted local secrets.
+- [ ] Add portable launcher health checks, browser opening, clean shutdown, and safe-eject guidance.
+- [x] Document offline limitations, required internet connectivity, and USB security considerations.
+- [ ] Test Windows, macOS, and Linux launch paths or provide reproducible build instructions where the sandbox cannot emulate a host OS.
+
+- [x] Add explicit macOS and Linux launcher permission and startup instructions to the USB README.
