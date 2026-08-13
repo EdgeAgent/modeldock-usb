@@ -148,3 +148,9 @@
 - [x] Connect saved local-model setup to Offline launch readiness instead of metadata-only storage.
 - [x] Validate local-model setup inputs and expose readiness state in User Settings.
 - [x] Save a fresh checkpoint after wiring Offline readiness.
+- [x] Add a local-model health-check action that probes configured loopback endpoints before launch.
+- [x] Add versioned JSON backups and automatic pre-restore snapshots before imports.
+- [x] Add Windows, macOS, and Linux USB model-path discovery controls.
+- [x] Validate the new health-check, backup, and discovery flows and save a fresh checkpoint.
+- [x] Implement distinct Windows, macOS, and Linux USB model path discovery conventions.
+- [x] Add tests for platform-specific discovery outputs and re-run the final validation/checkpoint pass.

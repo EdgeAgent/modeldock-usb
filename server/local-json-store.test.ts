@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { exportLocalJsonState, getLocalJsonState, getLocalJsonStateStats, importLocalJsonState, updateLocalJsonState, validateLocalModelSetup } from "./local-json-store";
+import { discoverLocalModelPaths, exportLocalJsonState, getLocalJsonState, getLocalJsonStateStats, importLocalJsonState, probeLocalModel, updateLocalJsonState, validateLocalModelSetup } from "./local-json-store";
 
 const originalPath = process.env.PORTABLE_JSON_STORE_PATH;
 const tempDirectories: string[] = [];
@@ -36,11 +36,14 @@ describe("local JSON state store", () => {
     await updateLocalJsonState({ executionMode: "offline", workspace: { localModel: { modelName: "local-test" } }, tables: { agents: [{ id: 1, name: "Scout" }] } });
 
     const backup = await exportLocalJsonState();
+    expect(JSON.parse(backup).backupVersion).toBe(1);
     await updateLocalJsonState({ executionMode: "cloud", workspace: { localModel: null } });
     const restored = await importLocalJsonState(backup);
     const stats = await getLocalJsonStateStats();
 
     expect(restored.executionMode).toBe("offline");
+    expect(restored.snapshotPath).toContain("pre-restore-v1-");
+    expect((await readFile(restored.snapshotPath, "utf8"))).toContain("snapshotType");
     expect(restored.tables.agents).toEqual([{ id: 1, name: "Scout" }]);
     expect(stats.sizeBytes).toBeGreaterThan(0);
     await expect(importLocalJsonState(JSON.stringify({ executionMode: "offline" }))).rejects.toThrow("valid Agent Ops Desk JSON store");
@@ -50,6 +53,20 @@ describe("local JSON state store", () => {
     expect(validateLocalModelSetup({ provider: "llama.cpp", modelName: "local", modelPath: "./models/model.gguf" }).ready).toBe(true);
     expect(validateLocalModelSetup({ provider: "Ollama", modelName: "local", modelPath: "http://127.0.0.1:11434" }).ready).toBe(true);
     expect(validateLocalModelSetup({ provider: "Remote", modelName: "cloud", modelPath: "https://api.example.com/model" }).ready).toBe(false);
+  });
+
+  it("reports path health without network access and exposes platform discovery candidates", async () => {
+    const pathHealth = await probeLocalModel({ provider: "llama.cpp", modelName: "local", modelPath: "./models/model.gguf" });
+    const discovery = discoverLocalModelPaths();
+    const windows = discoverLocalModelPaths("win32");
+    const mac = discoverLocalModelPaths("darwin");
+    const linux = discoverLocalModelPaths("linux");
+    expect(pathHealth.health).toBe("path");
+    expect(pathHealth.ready).toBe(true);
+    expect(discovery.candidates.some((candidate) => candidate.includes("models"))).toBe(true);
+    expect(windows.candidates.some((candidate) => candidate.includes("windows"))).toBe(true);
+    expect(mac.candidates.some((candidate) => candidate.includes("macos"))).toBe(true);
+    expect(linux.candidates.some((candidate) => candidate.includes("linux"))).toBe(true);
   });
 
   it("recovers with safe defaults when the state file does not exist", async () => {

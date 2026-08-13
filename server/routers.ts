@@ -6,7 +6,7 @@ import { addAuditLog, addExecutionLog, createApproval, createDeliverable, create
 import { publishRealtime } from "./realtime";
 import { z } from "zod";
 import { nanoid } from "nanoid";
-import { exportLocalJsonState, getLocalJsonState, getLocalJsonStatePath, getLocalJsonStateStats, getLocalModelReadiness, importLocalJsonState, updateLocalJsonState, validateLocalModelSetup } from "./local-json-store";
+import { discoverLocalModelPaths, exportLocalJsonState, getLocalJsonState, getLocalJsonStatePath, getLocalJsonStateStats, getLocalModelReadiness, importLocalJsonState, probeLocalModel, updateLocalJsonState, validateLocalModelSetup } from "./local-json-store";
 
 export const appRouter = router({
   system: systemRouter,
@@ -15,7 +15,7 @@ export const appRouter = router({
       const state = await getLocalJsonState();
       const stats = await getLocalJsonStateStats();
       const readiness = await getLocalModelReadiness();
-      return { executionMode: state.executionMode, updatedAt: state.updatedAt, storagePath: getLocalJsonStatePath(), sizeBytes: stats.sizeBytes, lastSyncAt: stats.updatedAt, localModel: readiness.setup, localModelReady: readiness.ready, localModelMessage: readiness.message, isFirstRun: !readiness.setup };
+      return { executionMode: state.executionMode, updatedAt: state.updatedAt, storagePath: getLocalJsonStatePath(), sizeBytes: stats.sizeBytes, lastSyncAt: stats.updatedAt, localModel: readiness.setup, localModelReady: readiness.ready, localModelMessage: readiness.message, localModelHealth: readiness.health, localModelCheckedAt: readiness.checkedAt, isFirstRun: !readiness.setup };
     }),
     setExecutionMode: protectedProcedure.input(z.object({ executionMode: z.enum(["offline", "cloud"]) })).mutation(async ({ input, ctx }) => {
       const state = await updateLocalJsonState({ executionMode: input.executionMode });
@@ -30,11 +30,13 @@ export const appRouter = router({
       await addAuditLog({ eventType: "Local model configured", actorType: "human", actorName: ctx.user.name || ctx.user.email || "Workspace user", details: `${input.provider} · ${input.modelName}`, referenceKey: "WORKSPACE-LOCAL-MODEL" });
       return { localModel: state.workspace.localModel, isFirstRun: false };
     }),
-    exportBackup: protectedProcedure.mutation(async () => ({ filename: `agent-ops-backup-${new Date().toISOString().replace(/[:.]/g, "-")}.json`, serialized: await exportLocalJsonState() })),
+    healthCheckLocalModel: protectedProcedure.mutation(async () => getLocalModelReadiness()),
+    discoverModelPaths: protectedProcedure.query(() => discoverLocalModelPaths()),
+    exportBackup: protectedProcedure.mutation(async () => ({ filename: `agent-ops-backup-v1-${new Date().toISOString().replace(/[:.]/g, "-")}.json`, serialized: await exportLocalJsonState() })),
     importBackup: protectedProcedure.input(z.object({ serialized: z.string().min(2).max(20_000_000) })).mutation(async ({ input, ctx }) => {
       const state = await importLocalJsonState(input.serialized);
       await addAuditLog({ eventType: "Local JSON backup imported", actorType: "human", actorName: ctx.user.name || ctx.user.email || "Workspace user", details: "Portable workspace state restored from a JSON backup", referenceKey: "WORKSPACE-BACKUP" });
-      return { executionMode: state.executionMode, updatedAt: state.updatedAt, storagePath: getLocalJsonStatePath() };
+      return { executionMode: state.executionMode, updatedAt: state.updatedAt, storagePath: getLocalJsonStatePath(), snapshotPath: state.snapshotPath };
     }),
   }),
   auth: router({
