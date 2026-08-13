@@ -141,3 +141,10 @@
 - [x] Re-run full validation and save a checkpoint after the core adapter expansion.
 - [x] Align portable database-url and config examples with the default local JSON persistence path and optional MySQL override.
 - [x] Save the final checkpoint after the configuration documentation correction.
+- [x] Add a first-run local model setup wizard for fully disconnected agent execution.
+- [x] Add JSON-store export and import controls in User Settings with validation and clear feedback.
+- [x] Enhance the Offline/Cloud status indicator with hover details for last sync time and data-store size.
+- [x] Validate the new settings flows and save a fresh checkpoint.
+- [x] Connect saved local-model setup to Offline launch readiness instead of metadata-only storage.
+- [x] Validate local-model setup inputs and expose readiness state in User Settings.
+- [x] Save a fresh checkpoint after wiring Offline readiness.

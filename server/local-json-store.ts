@@ -1,4 +1,4 @@
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, stat, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 export type LocalJsonState = {
@@ -57,4 +57,57 @@ export async function updateLocalJsonState(patch: Partial<Pick<LocalJsonState, "
 
 export function getLocalJsonStatePath() {
   return statePath();
+}
+
+export async function getLocalJsonStateStats() {
+  try {
+    const file = await stat(statePath());
+    return { path: statePath(), sizeBytes: file.size, updatedAt: (await readState()).updatedAt };
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    return { path: statePath(), sizeBytes: 0, updatedAt: defaultState.updatedAt };
+  }
+}
+
+export type LocalModelSetup = { provider: string; modelName: string; modelPath: string; apiBaseUrl?: string; configuredAt?: string; ready?: boolean };
+
+export function validateLocalModelSetup(input: LocalModelSetup) {
+  const provider = input.provider.trim();
+  const modelName = input.modelName.trim();
+  const modelPath = input.modelPath.trim();
+  if (!provider || !modelName || !modelPath) return { ready: false, message: "Provider, model name, and a local path or loopback endpoint are required." };
+  const isLoopbackUrl = [modelPath, input.apiBaseUrl].some((value) => typeof value === "string" && (value.startsWith("http://localhost") || value.startsWith("https://localhost") || value.startsWith("http://127.0.0.1") || value.startsWith("https://127.0.0.1")));
+  const isPortablePath = modelPath.startsWith("./") || modelPath.startsWith("../") || modelPath.startsWith("/") || /^[A-Za-z]:/.test(modelPath);
+  if (!isLoopbackUrl && !isPortablePath) return { ready: false, message: "Use a USB-relative path such as ./models/model.gguf or a localhost/127.0.0.1 endpoint." };
+  return { ready: true, message: "Local model configuration is ready for Offline launch checks." };
+}
+
+export async function getLocalModelReadiness() {
+  const state = await readState();
+  const setup = state.workspace.localModel as LocalModelSetup | undefined;
+  if (!setup) return { ready: false, message: "Configure a local model before launching fully disconnected work.", setup: null };
+  return { ...validateLocalModelSetup(setup), setup };
+}
+
+export async function exportLocalJsonState() {
+  return JSON.stringify(await readState(), null, 2);
+}
+
+export async function importLocalJsonState(serialized: string) {
+  const parsed = JSON.parse(serialized) as Partial<LocalJsonState>;
+  if (!parsed || (parsed.executionMode !== "offline" && parsed.executionMode !== "cloud") || !parsed.workspace || typeof parsed.workspace !== "object" || !parsed.tables || typeof parsed.tables !== "object") {
+    throw new Error("The selected backup is not a valid Agent Ops Desk JSON store");
+  }
+  const next: LocalJsonState = {
+    executionMode: parsed.executionMode,
+    updatedAt: new Date().toISOString(),
+    workspace: parsed.workspace as Record<string, unknown>,
+    tables: parsed.tables as Record<string, Array<Record<string, any>>>,
+  };
+  const target = statePath();
+  const temporary = `${target}.tmp`;
+  await mkdir(dirname(target), { recursive: true });
+  await writeFile(temporary, `${JSON.stringify(next, null, 2)}\n`, { encoding: "utf8", mode: 0o600 });
+  await rename(temporary, target);
+  return next;
 }
