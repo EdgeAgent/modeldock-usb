@@ -36,6 +36,7 @@ export const agentRuns = mysqlTable("agentRuns", {
   currentStep: varchar("currentStep", { length: 180 }).default("Initializing workflow").notNull(),
   elapsedSeconds: int("elapsedSeconds").default(0).notNull(),
   costCents: int("costCents").default(0).notNull(),
+  targetDate: timestamp("targetDate"),
   startedAt: timestamp("startedAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
