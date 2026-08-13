@@ -162,3 +162,9 @@
 - [x] Verify repository hygiene, typecheck, tests, launcher behavior, and visual UI before GitHub export; native Windows execution remains an explicitly documented host-side release gate.
 - [x] Save a GitHub-ready checkpoint and prepare the project for repository export.
 - [ ] Re-authenticate the GitHub connector and export the checkpointed project to the user’s repository.
+- [x] Remove visible Manus branding from product-facing UI, metadata, and local USB copy; infrastructure-only names and auth comments remain non-user-facing.
+- [x] Rebrand the product as a clear local-model LLM USB platform across the dashboard and README as ModelDock USB.
+- [x] Optimize the README hero section for GitHub profile visibility, fast scanning, and shareable positioning.
+- [x] Verify the rebrand, run tests, capture visuals, and save a fresh checkpoint.
+- [ ] Save a new checkpoint containing the ModelDock rebrand and README hero updates.
+- [ ] Run a final quick grep after checkpointing to confirm no remaining user-facing old brand strings.

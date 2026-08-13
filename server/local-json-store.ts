@@ -162,7 +162,7 @@ export async function importLocalJsonState(serialized: string) {
   const current = await readState();
   const parsed = JSON.parse(serialized) as Partial<LocalJsonState>;
   if (!parsed || (parsed.executionMode !== "offline" && parsed.executionMode !== "cloud") || !parsed.workspace || typeof parsed.workspace !== "object" || !parsed.tables || typeof parsed.tables !== "object") {
-    throw new Error("The selected backup is not a valid Agent Ops Desk JSON store");
+    throw new Error("The selected backup is not a valid ModelDock JSON store");
   }
   const next: LocalJsonState = {
     executionMode: parsed.executionMode,

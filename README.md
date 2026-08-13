@@ -1,16 +1,27 @@
-# Agent Ops Desk
+# ModelDock USB
 
-> **A human-oversight operating system for autonomous business work — portable, local-first, and built to keep people in control.**
+> **Your local LLM command center — autonomous business workflows, human oversight, and portable USB-first execution.**
 
-Agent Ops Desk turns natural-language business requests into scoped, observable workflows that can be launched, paused, approved, audited, retried, and stopped from one control center. It is designed for teams that want the leverage of AI agents without giving up operational visibility, approval gates, or emergency controls.
+**ModelDock USB** turns a plain-language business ask into a trackable workflow that can be planned, launched, paused, approved, audited, retried, or stopped. It brings local-model operations out of the demo and into a control desk designed for real operators.
+
+**Why people should care:** run a serious agent workspace from a removable drive, keep operational state local by default, connect a loopback model when you want fully disconnected execution, and retain a human approval desk for the moments that matter.
+
+| Local-first promise | What ModelDock delivers |
+|---|---|
+| **Portable** | Windows, macOS, and Linux USB launchers with bundled-runtime slots |
+| **Private by default** | Atomic local JSON persistence, encrypted secret helper, loopback binding |
+| **Operator-controlled** | Approval gates, audit history, pause/resume, retries, timeouts, and emergency stop |
+| **Model-flexible** | Local model setup, endpoint health checks, USB path discovery, and read-only model scanning |
+
+> **Start here:** run `pnpm install && pnpm test`, then open the dashboard with `pnpm dev`. To use it as a USB product, build with `pnpm portable:package` and follow [`portable/README.md`](portable/README.md).
 
 The platform runs as a web dashboard and can be assembled into a cross-platform USB package for **Windows, macOS, and Linux**. Its portable runtime defaults to an atomic local JSON store, supports local-model setup and health checks, and keeps cloud connectivity optional rather than mandatory.
 
 ## Why this project is different
 
-Most agent demos show a model completing a task. Agent Ops Desk is designed around the harder question: **how do you operate a fleet of agents responsibly when the work matters?**
+Most agent demos show a model completing a task. ModelDock is designed around the harder question: **how do you operate a fleet of agents responsibly when the work matters?**
 
-| Operating problem | Agent Ops Desk response |
+| Operating problem | ModelDock response |
 |---|---|
 | Business asks arrive vague and unstructured | Natural-language command center converts asks into ordered workflow steps |
 | Agents can act faster than people can review | Human approval queue with edit, deny, resubmit, and audit attribution |
@@ -146,4 +157,4 @@ Contributions are welcome when they improve operator control, reproducibility, s
 
 ## License
 
-Agent Ops Desk is released under the MIT License. See `package.json` for the repository license declaration.
+ModelDock is released under the MIT License. See `package.json` for the repository license declaration.

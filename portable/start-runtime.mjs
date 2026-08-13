@@ -14,7 +14,7 @@ const runtime = selectNode(root);
 const portableDatabaseUrl = existsSync(databaseFile) ? readFileSync(databaseFile, "utf8").trim() : "";
 
 if (!existsSync(entry)) {
-  console.error("Agent Ops Desk is not built. Run the portable preparation command before launching from USB.");
+  console.error("ModelDock is not built. Run the portable preparation command before launching from USB.");
   process.exit(2);
 }
 
@@ -25,7 +25,7 @@ const child = spawn(runtime.path, [entry], {
 });
 
 const openBrowser = () => { const url = `http://127.0.0.1:${port}`; const command = process.platform === "win32" ? "start" : process.platform === "darwin" ? "open" : "xdg-open"; const args = process.platform === "win32" ? ["", url] : [url]; spawn(command, args, { detached: true, stdio: "ignore", shell: process.platform === "win32" }).unref(); };
-const waitForHealth = async () => { for (let attempt = 0; attempt < 30; attempt += 1) { try { const response = await fetch(`http://127.0.0.1:${port}/`); if (response.ok || response.status < 500) { openBrowser(); return; } } catch {} await new Promise((resolveDelay) => setTimeout(resolveDelay, 500)); } console.error(`Agent Ops Desk did not become ready at http://127.0.0.1:${port}`); };
+const waitForHealth = async () => { for (let attempt = 0; attempt < 30; attempt += 1) { try { const response = await fetch(`http://127.0.0.1:${port}/`); if (response.ok || response.status < 500) { openBrowser(); return; } } catch {} await new Promise((resolveDelay) => setTimeout(resolveDelay, 500)); } console.error(`ModelDock did not become ready at http://127.0.0.1:${port}`); };
 void waitForHealth();
 
 const shutdown = (signal) => {

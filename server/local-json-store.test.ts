@@ -46,7 +46,7 @@ describe("local JSON state store", () => {
     expect((await readFile(restored.snapshotPath, "utf8"))).toContain("snapshotType");
     expect(restored.tables.agents).toEqual([{ id: 1, name: "Scout" }]);
     expect(stats.sizeBytes).toBeGreaterThan(0);
-    await expect(importLocalJsonState(JSON.stringify({ executionMode: "offline" }))).rejects.toThrow("valid Agent Ops Desk JSON store");
+    await expect(importLocalJsonState(JSON.stringify({ executionMode: "offline" }))).rejects.toThrow("valid ModelDock JSON store");
   });
 
   it("validates portable paths and loopback endpoints for Offline readiness", () => {

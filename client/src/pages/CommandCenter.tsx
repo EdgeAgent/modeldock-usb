@@ -21,7 +21,7 @@ const suggestions = [
 ];
 
 const quickTemplates = [
-  { label: "Weekly agency operations", prompt: "Run weekly agency operations with Signal Scout, then have Campaign Architect draft the next campaign, then have Delivery Steward prepare the client update for review, priority normal, tier 1" },
+  { label: "Weekly workspace operations", prompt: "Run weekly workspace operations with Signal Scout, then have Campaign Architect draft the next campaign, then have Delivery Steward prepare the client update for review, priority normal, tier 1" },
   { label: "Client proposal pipeline", prompt: "Launch Client Intake to scope the request, then Proposal Writer to draft the proposal, then Delivery Steward package the output for approval, priority high, tier 2" },
   { label: "Launch campaign safely", prompt: "Have Campaign Architect plan the campaign, then Signal Scout validate the audience, then publish the campaign for human approval, priority high, tier 3" },
 ];
@@ -51,7 +51,7 @@ function parseWorkflowPlan(command: string, availableAgents: Array<{ id: number;
 export default function CommandCenter() {
   const [, setLocation] = useLocation();
   const [messages, setMessages] = useState<Message[]>([
-    { role: "system", content: "You are the Agent Ops Desk command assistant. Never bypass approval gates or emergency stops." },
+    { role: "system", content: "You are the ModelDock local LLM command assistant. Never bypass approval gates or emergency stops." },
     { role: "assistant", content: "Command center ready. Tell me what you want to run, pause, inspect, or approve. I will keep every action inside the workspace guardrails." },
   ]);
   const [isThinking, setIsThinking] = useState(false);
@@ -90,8 +90,8 @@ export default function CommandCenter() {
       setMessages((current) => [...current, { role: "assistant", content: `Live execution update\n\n${liveUpdate}` }]);
     }
     const latest = activeRuns[0]?.run.runKey;
-    if (latest) document.title = `${latest} · Agent Ops Desk`;
-    return () => { document.title = "Agent Ops Desk"; };
+    if (latest) document.title = `${latest} · ModelDock`;
+    return () => { document.title = "ModelDock"; };
   }, [activeRuns]);
 
   const reply = (content: string) => setMessages((current) => [...current, { role: "assistant", content }]);

@@ -1,6 +1,6 @@
-# Agent Ops Desk USB Package
+# ModelDock USB Package
 
-This directory defines the cross-platform USB launch surface for Agent Ops Desk. The intended package is a folder that can be copied to a removable drive and started with one platform launcher:
+This directory defines the cross-platform USB launch surface for ModelDock. The intended package is a folder that can be copied to a removable drive and started with one platform launcher:
 
 | Host | Launcher | Behavior |
 |---|---|---|
