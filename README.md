@@ -13,7 +13,7 @@ Run a portable agent command center from a USB drive. Turn plain-language reques
 
 [Quick start](#quick-start) · [Why ModelDock](#why-modeldock) · [USB workflow](#one-click-usb-workflow) · [Security](#security-and-privacy) · [Roadmap](#roadmap)
 
-![ModelDock USB architecture: local model runtime, workflow planner, human approval desk, live monitoring, audit trail, and emergency stop](https://raw.githubusercontent.com/EdgeAgent/modeldock-usb/main/docs/modeldock-architecture.png)
+![ModelDock USB architecture: local model runtime, workflow planner, human approval desk, live monitoring, audit trail, and emergency stop](https://raw.githubusercontent.com/EdgeAgent/EdgeAgent/main/assets/modeldock-architecture.png)
 
 </div>
 
