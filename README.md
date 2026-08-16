@@ -11,11 +11,25 @@ Run a portable agent command center from a USB drive. Turn plain-language reques
 [![Execution](https://img.shields.io/badge/execution-Offline%20%7C%20Cloud-8b5cf6)](portable/README.md)
 [![License](https://img.shields.io/badge/license-MIT-22c55e)](package.json)
 
-[Quick start](#quick-start) · [Why ModelDock](#why-modeldock) · [USB workflow](#one-click-usb-workflow) · [Security](#security-and-privacy) · [Roadmap](#roadmap)
+[Quick start](#quick-start) · [USB Deployment Guide](#usb-deployment-guide) · [Why ModelDock](#why-modeldock) · [USB workflow](#one-click-usb-workflow) · [Security](#security-and-privacy)
 
 ![ModelDock USB architecture: local model runtime, workflow planner, human approval desk, live monitoring, audit trail, and emergency stop](https://raw.githubusercontent.com/EdgeAgent/EdgeAgent/main/assets/modeldock-architecture.png)
 
 </div>
+
+---
+
+## 🔌 USB Deployment Guide (exFAT, Llama, Hugging Face `.eye`, & `.bat`)
+
+If you are setting up ModelDock USB from scratch on a raw flash drive, follow our step-by-step physical deployment guide:
+
+1. **Format USB to exFAT:** Ensure cross-platform support and large file handling.
+2. **Setup Directories:** Create `bin/llama-cpp/`, `models/`, and `workflows/`.
+3. **Install Llama Runtimes:** Download `llama.cpp` binaries into `bin/llama-cpp/`.
+4. **Download Hugging Face Models & Rename to `.eye`:** Grab any GGUF from Hugging Face and change the extension to `.eye` (e.g., `llama-3-8b.eye`).
+5. **Deploy Batch Launcher:** Create `launch_modeldock.bat` on the root of your USB drive.
+
+→ **[Read the Complete USB Deployment Guide](docs/deployment_guide.md)**
 
 ---
 
