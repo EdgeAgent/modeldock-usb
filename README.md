@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/modeldock-banner.png" alt="ModelDock USB Banner" width="100%"/>
+
 # ModelDock USB
 
 ### Local LLM operations for autonomous business workflows—with humans in control.
